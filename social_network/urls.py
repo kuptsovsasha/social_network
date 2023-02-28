@@ -16,12 +16,13 @@ Including another URLconf
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import include, path
+
 from social_network.views import home
 
 urlpatterns = [
-    path('', home, name="home"),
-    path('admin/', admin.site.urls),
+    path("", home, name="home"),
+    path("admin/", admin.site.urls),
     path("user/", include("social_network.user.urls")),
     path("post/", include("social_network.post.urls")),
     path("profile/", include("social_network.user_profile.urls")),

@@ -1,19 +1,18 @@
 import json
 
-from django.contrib import messages, auth
-from django.contrib.auth import get_user_model, authenticate, login
+from django.contrib import auth, messages
+from django.contrib.auth import authenticate, get_user_model, login
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.views import LoginView
 from django.http import HttpResponseRedirect
-
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, RedirectView
 from rest_framework import generics, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from social_network.user.forms import UserRegistrationForm, CustomAuthenticationForm
+from social_network.user.forms import CustomAuthenticationForm, UserRegistrationForm
 from social_network.user.serializers import ChangePasswordSerializer
 
 User = get_user_model()
@@ -22,8 +21,8 @@ User = get_user_model()
 class RegisterView(CreateView):
     model = User
     form_class = UserRegistrationForm
-    template_name = 'users/register.html'
-    success_url = '/'
+    template_name = "users/register.html"
+    success_url = "/"
 
     def dispatch(self, request, *args, **kwargs):
         if self.request.user and self.request.user.is_authenticated:
@@ -31,9 +30,9 @@ class RegisterView(CreateView):
         return super().dispatch(self.request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        if User.objects.filter(email=request.POST['email']).exists():
-            messages.warning(request, 'This email is already taken')
-            return redirect('register')
+        if User.objects.filter(email=request.POST["email"]).exists():
+            messages.warning(request, "This email is already taken")
+            return redirect("register")
 
         user_form = UserRegistrationForm(data=request.POST)
         if user_form.is_valid():
@@ -41,21 +40,21 @@ class RegisterView(CreateView):
             password = user_form.cleaned_data.get("password1")
             user.set_password(password)
             user.save()
-            messages.success(request, 'Successfully registered')
-            return redirect(reverse_lazy('login'))
+            messages.success(request, "Successfully registered")
+            return redirect(reverse_lazy("login"))
         else:
-            return render(request, 'users/register.html', {'form': user_form})
+            return render(request, "users/register.html", {"form": user_form})
 
 
 class CustomLoginView(LoginView):
-    template_name = 'users/login.html'
-    success_url = '/'
+    template_name = "users/login.html"
+    success_url = "/"
     form_class = CustomAuthenticationForm
 
     def form_invalid(self, form):
-        if self.request.method == 'POST':
+        if self.request.method == "POST":
             context = self.get_context_data(form=form)
-            context['form_errors'] = form.errors
+            context["form_errors"] = form.errors
             return self.render_to_response(context)
         else:
             return super().form_invalid(form)
@@ -68,11 +67,12 @@ class LogoutView(RedirectView):
     """
     Provides users the ability to logout
     """
-    url = reverse_lazy('home')
+
+    url = reverse_lazy("home")
 
     def get(self, request, *args, **kwargs):
         auth.logout(request)
-        messages.success(request, 'You are now logged out')
+        messages.success(request, "You are now logged out")
         return super(LogoutView, self).get(request, *args, **kwargs)
 
 

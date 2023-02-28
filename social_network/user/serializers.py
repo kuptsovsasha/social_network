@@ -8,6 +8,7 @@ class UserSerializer(serializers.ModelSerializer):
     """
     Update User object data
     """
+
     class Meta:
         model = User
         fields = "__all__"
@@ -28,4 +29,3 @@ class ChangePasswordSerializer(serializers.Serializer):
                 "New password can't be same as old password"
             )
         return value
-

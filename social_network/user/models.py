@@ -4,15 +4,18 @@ from django.db import models
 
 class User(AbstractUser):
     username = models.CharField(
-        'username',
+        "username",
         max_length=50,
         unique=False,
-        help_text='Required. 50 characters or fewer. Letters, digits and @/./+/-/_ only.',
+        help_text="Required. 50 characters or fewer. Letters, digits and @/./+/-/_ only.",
     )
-    email = models.EmailField(unique=True, blank=False,
-                              error_messages={
-                                  'unique': "A user with that email already exists.",
-                              })
+    email = models.EmailField(
+        unique=True,
+        blank=False,
+        error_messages={
+            "unique": "A user with that email already exists.",
+        },
+    )
     gender = models.CharField(max_length=20, blank=True, null=True)
     status = models.BooleanField(default=False)
     about = models.TextField(blank=True)

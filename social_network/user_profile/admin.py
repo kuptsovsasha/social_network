@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from social_network.user_profile.models import Profile, FriendList, FriendRequest
+from social_network.user_profile.models import FriendList, FriendRequest, Profile
 
 # Register your models here.
 
