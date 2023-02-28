@@ -1,0 +1,21 @@
+{% for profile in results %}
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title"><img src="{{ profile.profile_image.url }}"
+                                        alt="" class="rounded-circle" style="width: 100px">
+                <a href="{% url 'friend_profile' profile_id=profile.id %}"
+                   class="btn-link">{{ profile.user.username }}</a>
+
+            </h5>
+            {% if profile.user.email not in friends and profile.user.email not in friends_requests %}
+              <p>
+                <a href="{% url 'send_friend_request' friend_id=profile.id %}"
+                    class="btn btn-danger btn-sm">Add Friend </a>
+              </p>
+            {% endif %}
+        </div>
+
+    </div>
+{% empty %}
+    <p>No results found.</p>
+{% endfor %}

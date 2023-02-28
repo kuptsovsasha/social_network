@@ -1,0 +1,88 @@
+<!doctype html>
+
+{%  load static %}
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="{% static 'img/logo.png' %}">
+
+    <title>Wiz Social Network</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="{% static 'css/dashboard.css' %}" rel="stylesheet">
+</head>
+
+<body>
+<nav class="navbar navbar-dark sticky-top bg-primary flex-md-nowrap p-0 justify-content-between">
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#"><img style="width:20px" src="./img/logo.png" alt=""> Wiz Network</a>
+
+
+
+    <ul class="navbar-nav px-3">
+        <li class="nav-item text-nowrap">
+            <a class="nav-link text-white d-inline mr-4" href="{% url 'login' %}">Sign In</a>
+            <a class="nav-link text-white d-inline" href="#">Register</a>
+        </li>
+    </ul>
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <main role="main" class="col-md-4 m-auto col-lg-4 pt-3 px-4">
+            <div class="card-body">
+                <h5 class="card-title text-center">Register</h5>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" class="form-control" id="name" name="username" placeholder="">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email address</label>
+                        <input type="email" class="form-control" id="email" name="email" placeholder="">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" class="form-control" id="password1" name="password1" placeholder="">
+                    </div>
+                    <div class="form-group">
+                        <label for="confirm_password">Confirm Password</label>
+                        <input type="password" class="form-control" id="confirm_password" name="password2" placeholder="">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-block" href="{% url 'register' %}">Register</button>
+                </form>
+            </div>
+        </main>
+    </div>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script src="{% static 'js/vendor/popper.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
+<script>
+    feather.replace()
+</script>
+<script>
+    document.querySelector('form').addEventListener('submit', function(event) {
+        const password = document.querySelector('#password');
+        const confirm_password = document.querySelector('#confirm_password');
+        if (password.value !== confirm_password.value) {
+            alert('Passwords do not match');
+            event.preventDefault(); // prevent the form from submitting
+        }
+    });
+</script>
+</body>
+</html>

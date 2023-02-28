@@ -1,0 +1,163 @@
+<!doctype html>
+
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="{% static 'img/logo.png' %}">
+
+    <title>Wiz Social Network</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="{% static 'css/dashboard.css' %}" rel="stylesheet">
+</head>
+
+<body>
+<nav class="navbar navbar-dark sticky-top bg-primary flex-md-nowrap p-0">
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="{% url 'home' %}">
+        <img style="width:20px" src="{% static 'img/logo.png' %}" alt=""> Wiz Network</a>
+    <ul class="navbar-nav px-3">
+        <li class="nav-item text-nowrap">
+            <a class="nav-link text-white" href="{% url 'logout' %}">Sign out</a>
+        </li>
+    </ul>
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+            <div class="sidebar-sticky">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{% url 'home' %}">
+                            <span data-feather="home"></span>
+                            Home <span class="sr-only">(current)</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'profile' %}">
+                            <span data-feather="user"></span>
+                            Profile
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'friends' %}">
+                            <span data-feather="users"></span>
+                            Friends
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'chats' %}">
+                            <span data-feather="message-circle"></span>
+                            Messenger
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <span data-feather="user"></span>
+                            Account
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Edit Profile</h5>
+                    <form id="my-form" enctype="multipart/form-data>
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" class="form-control" id="name" name="username" placeholder="">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email address</label>
+                            <input type="email" class="form-control" id="email" name="email" placeholder="">
+                        </div>
+                        <div class="form-group">
+                            <label for="avatar">Avatar</label>
+                            <input type="file" class="form-control" id="avatar" name="profile_image" placeholder="">
+                            <br>
+                            <img id="avatar-preview" src="" alt="Avatar Preview" style="max-width: 100px;">
+                        </div>
+                        <div class="form-group">
+                            <label for="gender">Gender</label>
+                            <select class="form-control" id="gender" name="gender">
+                                <option>Male</option>
+                                <option>Female</option>
+                                <option>Other</option>
+                            </select>
+                        </div>
+
+                        <a href="{% url 'change_password_template' %}">Click here to change password</a>
+
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<script src="{% static 'js/vendor/popper.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
+<script>
+    feather.replace()
+</script>
+<script>
+    $(document).ready(function() {
+        console.log("I'm alive")
+        let $form = $('form');
+
+    // load profile data
+        $.ajax({
+            url: '/profile/profile/',
+            type: 'GET',
+            dataType: 'json',
+            success: function(data) {
+                $form.find('#name').val(data.username);
+                 $('#avatar-preview').attr('src', data.profile_image);
+                $form.find('#email').val(data.email);
+                $form.find('#gender').val(data.gender);
+            }
+        });
+
+        // submit form data
+        $form.submit(function(event) {
+            event.preventDefault();
+            let new_form = $('#my-form')[0];
+            let formData = new FormData(new_form);
+            let image = $('#avatar')[0].files[0];
+            formData.append('profile_image', image);
+
+            $.ajax({
+                url: '/profile/profile/',
+                type: 'PUT',
+                dataType: 'json',
+                contentType: false,
+                processData: false,
+                data: formData,
+                headers: { "X-CSRFToken": $.cookie('csrftoken')},
+                success: function(data) {
+                    alert('Profile updated successfully!');
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert('Error updating profile: ' + jqXHR.responseText);
+                }
+            });
+        });
+    });
+
+</script>
+</body>
+</html>
