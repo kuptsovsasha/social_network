@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<body>
+     <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+            <div class="sidebar-sticky">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}"
+                           href="{% url 'home' %}">
+                            <span data-feather="home"></span>
+                            Home <span class="sr-only">(current)</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'profile' or request.resolver_match.url_name == 'friend_profile' %}active{% endif %}"
+                           href="{% url 'profile' %}">
+                            <span data-feather="user"></span>
+                            Profile
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'friends' %}active{% endif %}"
+                           href="{% url 'friends' %}">
+                            <span data-feather="users"></span>
+                            Friends
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'chats' or request.resolver_match.url_name == 'messages' %}active{% endif %}"
+                           href="{% url 'chats' %}">
+                            <span data-feather="message-circle"></span>
+                            Messenger
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link  {% if request.resolver_match.url_name == 'account' %}active{% endif %}"
+                           href="{% url 'account' %}">
+                            <span data-feather="user"></span>
+                            Account
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+</body>
+</html>

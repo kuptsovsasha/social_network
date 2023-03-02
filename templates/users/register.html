@@ -59,6 +59,22 @@
 
                     <button type="submit" class="btn btn-primary btn-block" href="{% url 'register' %}">Register</button>
                 </form>
+                 {% if messages %}
+                    <div class="alert alert-danger" role="alert">
+                        {% for message in messages %}
+                         <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                {% if form.errors %}
+                <div class="alert alert-danger">
+                    {% for field, errors in form.errors.items %}
+                    {% for error in errors %}
+                    <p>{{ field }}: {{ error }}</p>
+                    {% endfor %}
+                    {% endfor %}
+                </div>
+                {% endif %}
             </div>
         </main>
     </div>

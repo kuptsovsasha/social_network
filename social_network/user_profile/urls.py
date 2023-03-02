@@ -17,9 +17,9 @@ from social_network.user_profile.views import (
 urlpatterns = [
     path("", ProfileDetailView.as_view(), name="profile"),
     path(
-        "edit-profile-template/",
+        "account",
         TemplateView.as_view(template_name="profile/edit-profile.html"),
-        name="edit_profile_template",
+        name="account",
     ),
     path("profile/", profile_update_view, name="update_profile"),
     path("find-profiles/", FindProfilesView.as_view(), name="find_profiles"),

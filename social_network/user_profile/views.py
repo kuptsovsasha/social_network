@@ -2,8 +2,8 @@ from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
-from django.http import HttpResponseRedirect, JsonResponse
-from django.shortcuts import get_object_or_404, redirect, render
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404, redirect
 from django.template.loader import render_to_string
 from django.urls import reverse, reverse_lazy
 from django.views.generic import DetailView, ListView, RedirectView, TemplateView, View
@@ -27,7 +27,7 @@ class FindProfilesView(LoginRequiredMixin, TemplateView):
             Q(user__username__icontains=searched_chars)
             | Q(user__first_name__icontains=searched_chars)
             | Q(user__last_name__icontains=searched_chars)
-        )
+        ).exclude(user=request.user)
 
         requested_user_profile = Profile.objects.filter(user=request.user).last()
 
@@ -169,7 +169,9 @@ def remove_from_friends_list(request, friend_id):
 
 @login_required
 def accept_friend_request(request, friend_id):
-    friend = get_object_or_404(FriendRequest, sender_id=friend_id)
+    friend = get_object_or_404(
+        FriendRequest, sender_id=friend_id, receiver=request.user.profile
+    )
     friend.accept()
     return redirect("friends")
 

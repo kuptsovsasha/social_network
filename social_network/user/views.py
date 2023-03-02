@@ -1,8 +1,7 @@
 import json
 
 from django.contrib import auth, messages
-from django.contrib.auth import authenticate, get_user_model, login
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import get_user_model
 from django.contrib.auth.views import LoginView
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
