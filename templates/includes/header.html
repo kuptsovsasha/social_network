@@ -21,7 +21,9 @@
 <body>
 <nav class="navbar navbar-dark sticky-top bg-primary flex-md-nowrap p-0">
     <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#"><img style="width:20px" src="{% static 'img/logo.png' %}" alt=""> Wiz Network</a>
-    <input class="form-control w-100" id="search-input" type="text" placeholder="Search Friends" aria-label="Search Friends">
+    {% if request.resolver_match.url_name == 'home' %}
+        <input class="form-control w-100" id="search-input" type="text" placeholder="Search Friends" aria-label="Search Friends">
+    {% endif %}
     <ul class="navbar-nav px-3">
         <li class="nav-item text-nowrap">
             <a class="nav-link text-white" href="{% url 'logout' %}">Sign out</a>
